@@ -48,26 +48,43 @@ public class LibraryCardModel {
             System.out.println("Nhập số lượng lớn hơn 0");
             return;
         }
-        for (Book b : BookModel.bookSet){
-            if (!b.getIdBook().equals(keyword)){
-                System.out.println("Không sách nào có mã: " + keyword);
-            }
-            if (b.getIdBook().equals(keyword) && b.getBookNumber() >= keywordNumber && b.getBookNumber() > 0){
+
+        Iterator<Book> it = BookModel.bookSet.iterator();
+        while (it.hasNext()){
+            Book b = it.next();
+            boolean ketQua = kiemTraMaSach(keyword);
+            if (ketQua == true && b.getBookNumber() >= keywordNumber && b.getBookNumber() != 0){
                 nameBook = b.getNameBook();
                 numberBook = keywordNumber;
                 loanCard(sc,nameBook,numberBook);
-                int number = b.getBookNumber() - keywordNumber;
-                b.setBookNumber(number);
-
+                b.setBookNumber(b.getBookNumber()-keywordNumber);
+                System.out.println("Tạo Phiếu thành công");
+                return;
             }
-            if (b.getIdBook().equals(keyword) && b.getBookNumber() == 0){
+            if (ketQua == true && b.getBookNumber() == 0){
                 System.out.println("Sách có mã: " + keyword + " đã cho mượn hết");
             }
-            if (b.getIdBook().equals(keyword) && b.getBookNumber() < keywordNumber && b.getBookNumber() > 0){
+            if (ketQua == true && b.getBookNumber() < keywordNumber && b.getBookNumber() > 0){
                 System.out.println("Số lượng sách không đủ");
                 System.out.println("Số lượng sách còn lại là: " + b.getBookNumber());
             }
+            if (ketQua == false){
+                System.out.println("Không có sách nào có mã: " + keyword);
+                return;
+            }
         }
+
+    }
+
+    public boolean kiemTraMaSach(String keyword){
+        Iterator<Book> it = BookModel.bookSet.iterator();
+        while (it.hasNext()) {
+            Book b = it.next();
+            if (b.getIdBook().equals(keyword)) {
+                return true;
+            }
+        }
+        return false;
     }
     public void loanCard(Scanner sc, String nameBook, int numberBook){
         System.out.println("Nhập Tên người mượn");

@@ -43,8 +43,25 @@ public class PeopleModel {
         String phoneNumber = sc.nextLine();
         System.out.println("Nhập địa chỉ người đọc");
         String address = sc.nextLine();
-        People people = new People(idPeople, namePeople, phoneNumber, address);
-        peopleHashSet.add(people);
+        boolean ketQua = kiemTraIdPeople(idPeople);
+        if (ketQua == false){
+            People people = new People(idPeople, namePeople, phoneNumber, address);
+            peopleHashSet.add(people);
+            System.out.println("Thêm thành công");
+        } else {
+            System.out.println("Người đọc đã tồn tại.");
+        }
+
+    }
+    // kiểm tra ID đã tồn tại chưa
+    public boolean kiemTraIdPeople(String idPeople){
+        for (People p : peopleHashSet){
+            if (p.getIdPeople().equals(idPeople)){
+                return true;
+            }
+        }
+        return false;
+
     }
 
     public void detelePeople(Scanner sc) {
@@ -53,7 +70,7 @@ public class PeopleModel {
             return;
         }
         System.out.println("Nhập Mã Người cần xóa");
-        String keyword = sc.nextLine();
+        String idPeople = sc.nextLine();
         Iterator<People> it = peopleHashSet.iterator();
         while (it.hasNext()) {
             if (peopleHashSet.isEmpty()){
@@ -61,11 +78,15 @@ public class PeopleModel {
                 break;
             }
             People p = it.next();
-            if (!p.getIdPeople().equals(keyword)){
-                System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
-            }
-            if (p.getIdPeople().equals(keyword)) {
+            boolean ketQua = kiemTraIdPeople(idPeople);
+            if (ketQua == true){
                 it.remove();
+                System.out.println("Đã xóa thành công");
+                return;
+            }
+            if (ketQua == false){
+                System.out.println("Không tìm thấy người đọc nào có Mã: " + idPeople);
+                return;
             }
         }
     }
@@ -96,16 +117,20 @@ public class PeopleModel {
         System.out.println("Nhập Mã cần tìm");
         String keyword = sc.nextLine();
         System.out.println("Nhập mã cần thay đổi");
-        String keyword1 = sc.nextLine();
+        String idPeople = sc.nextLine();
+        boolean ketQua = kiemTraIdPeople(idPeople);
         Iterator<People> it = peopleHashSet.iterator();
         while (it.hasNext()) {
             People p = it.next();
             if (!p.getIdPeople().equals(keyword)){
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
-            if (p.getIdPeople().equals(keyword)) {
-                p.setIdPeople(keyword1);
+            if (ketQua == false){
+                p.setIdPeople(idPeople);
                 System.out.println("Thông tin đã được thay đổi");
+            } else {
+                System.out.println("Mã người đọc đã tồn tại");
             }
         }
     }
@@ -120,10 +145,12 @@ public class PeopleModel {
             People p = it.next();
             if (!p.getIdPeople().equals(keyword)){
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (p.getIdPeople().equals(keyword)) {
                 p.setNamePeople(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -138,10 +165,12 @@ public class PeopleModel {
             People p = it.next();
             if (!p.getIdPeople().equals(keyword)){
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (p.getIdPeople().equals(keyword)) {
                 p.setNumberPhone(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -155,10 +184,12 @@ public class PeopleModel {
             People p = it.next();
             if (!p.getIdPeople().equals(keyword)){
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (p.getIdPeople().equals(keyword)) {
                 p.setAddress(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -175,9 +206,11 @@ public class PeopleModel {
             People p = it.next();
             if (!p.getIdPeople().equals(keyword)){
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (p.getIdPeople().equals(keyword)) {
                 System.out.println(p.toString());
+                return;
             }
         }
     }

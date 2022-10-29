@@ -10,7 +10,7 @@ public class BookModel {
     public void loginQuanLySach(Scanner sc) {
         while (true) {
             int choose = tryCatchLoginSach(sc);
-            if (choose == 0){
+            if (choose == 0) {
                 System.out.println("Quay Lại");
                 break;
             }
@@ -44,36 +44,58 @@ public class BookModel {
         String author = sc.nextLine();
         System.out.println("Nhập số lượng sách");
         int numberBook = tryCatchNumber(sc);
-        Book book = new Book(idBook, nameBook, themeBook, author, numberBook);
-        bookSet.add(book);
+        boolean ketQua = kiemtra(idBook);
+        if (ketQua == true) {
+            System.out.println("Sách đã tồn tại trong thư viện");
+            return;
+        }
+        if (ketQua == false) {
+            Book book = new Book(idBook, nameBook, themeBook, author, numberBook);
+            bookSet.add(book);
+            System.out.println("Thêm thành công");
+        }
     }
 
     // Method display xóa sách trong TechMaster
     public void deleteBook(Scanner sc) {
-        if (bookSet.isEmpty()){
+        if (bookSet.isEmpty()) {
             System.out.println("Chưa có sách nào trong thư viện");
             return;
         }
         System.out.println("Nhập Mã Sách cần xóa");
-        String keyword = sc.nextLine();
+        String idBook = sc.nextLine();
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (!b.getIdBook().equals(keyword)){
-                System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+            boolean ketQua = kiemtra(idBook);
+            if (ketQua == false) {
+                System.out.println("Không tìm thấy người đọc nào có Mã: " + idBook);
+                return;
             }
-            if (b.getIdBook().equals(keyword)) {
+            if (ketQua == true) {
                 it.remove();
                 System.out.println("Đã xóa thành công");
+                return;
             }
         }
     }
+
+    // kiểm tra
+    public boolean kiemtra(String idBook) {
+        for (Book b : bookSet) {
+            if (b.getIdBook().equals(idBook)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // test in ra màn hình
-    public void xuat(){
-        if (bookSet.isEmpty()){
+    public void xuat() {
+        if (bookSet.isEmpty()) {
             System.out.println("Không có Book nào");
         }
-        for (Book b : bookSet){
+        for (Book b : bookSet) {
             System.out.println(b.toString());
         }
     }
@@ -81,12 +103,12 @@ public class BookModel {
     // Method display sửa thông tin sách vào TechMaster
     public void suaThongTinSach(Scanner sc) {
         while (true) {
-            if (bookSet.isEmpty()){
+            if (bookSet.isEmpty()) {
                 System.out.println("Chưa có sách nào trong thư viện");
                 break;
             }
             int choose = tryCatchSuaThongTin(sc);
-            if (choose == 0 ) {
+            if (choose == 0) {
                 System.out.println("Quay Lại");
                 break;
             }
@@ -122,12 +144,14 @@ public class BookModel {
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (!b.getIdBook().equals(keyword)){
+            if (!b.getIdBook().equals(keyword)) {
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (b.getIdBook().equals(keyword)) {
                 b.setIdBook(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -141,12 +165,14 @@ public class BookModel {
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (!b.getIdBook().equals(keyword)){
+            if (!b.getIdBook().equals(keyword)) {
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (b.getIdBook().equals(keyword)) {
                 b.setNameBook(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -160,12 +186,14 @@ public class BookModel {
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (!b.getIdBook().equals(keyword)){
+            if (!b.getIdBook().equals(keyword)) {
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (b.getIdBook().equals(keyword)) {
                 b.setBookTheme(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -179,12 +207,14 @@ public class BookModel {
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (!b.getIdBook().equals(keyword)){
+            if (!b.getIdBook().equals(keyword)) {
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword);
+                return;
             }
             if (b.getIdBook().equals(keyword)) {
                 b.setBookAuthor(keyword1);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
@@ -200,12 +230,14 @@ public class BookModel {
         Iterator<Book> it = bookSet.iterator();
         while (it.hasNext()) {
             Book b = it.next();
-            if (b.getIdBook().equals(keyword1)){
+            if (b.getIdBook().equals(keyword1)) {
                 System.out.println("Không tìm thấy người đọc nào có Mã: " + keyword1);
+                return;
             }
             if (b.getIdBook().equals(keyword)) {
                 b.setBookNumber(keyword);
                 System.out.println("Thông tin đã được thay đổi");
+                return;
             }
         }
     }
